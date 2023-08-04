@@ -15,13 +15,47 @@
     justify-content: space-between;
 }
 
-ul {
+.head-title {
+    display: flex;
+    width: 25%; 
+    align-items: center;
+    column-gap: 4%;
+}
+
+
+.head-options {
     text-decoration: none;
     list-style: none;
     display: flex;
     gap: 2rem;
 }
+.head-options h3 {
+    opacity: 0.7;
+}
+.head-options h3:hover {
+    opacity: 1;
+    cursor: pointer;
+}
 
 .menu-img {
     display: none;
 }
+
+@media (max-width: 600px) {
+    .menu-img {
+        display: block;
+    }
+    .head-options {
+        display: none;
+    }
+
+    
+}
+
+@media (max-width: 800px) {
+    .head-title {
+        font-size: small;
+        width: 60%;
+    }   
+}
+

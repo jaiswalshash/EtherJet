@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
 import "./head.css";
 import menu from "../../assets/menu.png"
+import plane from "../../assets/etherJet.png"
+import Menu from '../Menu/Menu';
 
 const Head = () => {
-    const options = ["Book", "Info","Check-in", "Login"]
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const options = ["Book", "Info","Check-in", "Login"];
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    }
+
+    const toggleClose = () => {
+        setMenuOpen(false);
+    }
   return (
     <div className="head">
-        <h1>Ether <span>Jet</span></h1>
+        <div className='head-title'>
+            <img src={plane} width={35} alt='ether'/>
+            <h1>Ether <span>JET</span></h1>
+        </div>
         <ul className='head-options'>
             {
                 options.map((option) => (
@@ -16,7 +30,10 @@ const Head = () => {
                 ))
             }
         </ul>
-        <img className='menu-img' src={menu} width={30} alt='menu'/>
+        <div className='menu-img'>
+            <img style={{cursor: "pointer"}} onClick={toggleMenu}  src={menu} width={30} alt='menu'/>
+            {menuOpen && <Menu options={options} close= {toggleClose}/>}
+        </div>
     </div>
   );
 };

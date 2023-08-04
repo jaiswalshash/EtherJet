@@ -1,0 +1,12 @@
+
+.search-button {
+    border: none;
+    height: 2rem;
+    width: 80%;
+    border-radius: 5px;
+    background-color: #DADADA;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

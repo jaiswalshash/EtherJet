@@ -1,12 +1,16 @@
 import './App.css';
-import { Footer } from './components/Footer/Footer';
-import Head from './components/Header/Head';
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import FlightSearch from './views/FlightSearch/FlightSearch';
 
 function App() {
   return (
-    <div className="App">
-      <Head />
-      <Footer/>
+    <div>
+      <Router basename="/">
+        <Routes>
+          <Route exact path="/" element={<FlightSearch />} />
+          <Route exact path="*" element={<FlightSearch/>} />
+        </Routes>
+      </Router>
     </div>
   );
 }
