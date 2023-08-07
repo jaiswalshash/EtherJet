@@ -15,9 +15,9 @@
 }
 
 .flightList {
-    height: 80%;
+    height: 100%;
     width: 100%;
-    padding: 1rem;
+    /* padding: 1rem; */
     display: flex;
     justify-content: space-between;
 }
@@ -77,9 +77,19 @@
     border-radius: 5px;
     padding: 5%;
 }
-.filter-sort {
+.filter {
     display: none;
 }
+.filter-sort {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.sorts {
+    display: flex;
+    gap: 1rem;
+}
+
 
 .modify-searchbar {
     width: 100%;
@@ -100,11 +110,24 @@
     border: 1px solid black;
 }
 
+.sort-button {
+    font-weight: 800;
+    opacity: 0.8;
+}
+.sort-button:hover {
+    font-weight: 800;
+    opacity: 1;
+    cursor: pointer;
+}
+
+
 @media (max-height: 600px) {
     .flight-main-body {
-        top: 7rem;
+        top: 4rem;
         bottom: 3rem;
-        
+    }
+    .modify-searchbar{
+        display: none;
     }
 }
 
@@ -115,12 +138,15 @@
         row-gap: 1%;
         align-items: center;
         padding: 2% 5%;
+        height: 100%;
+        overflow: hidden;
     }
     .flight-details {
         padding-left: 2%;
     }
     .flightList {
         padding: 0;
+        display: block;
     }
     .tourdate {
         display: none;
@@ -133,8 +159,25 @@
         z-index: 10;
     }
     .filter-sort {
-        display: block;
+        justify-content: space-between;
+        height: 2rem;
+        display: flex;
+        align-items: center;
     }
+    .filter {
+        display: block;
+        font-weight: 800;
+        cursor: pointer;
+    }
+    .modify-searchbar{
+        display: none;
+    }
+    .sorts {
+        gap: 0.3rem;
+    }
+}
+
+@media (max-width: 1300px) {
     .modify-searchbar{
         display: none;
     }

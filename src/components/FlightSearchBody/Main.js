@@ -65,7 +65,6 @@ const Main = () => {
             dispatch(setTourFrom(from));
             dispatch(setTourPax(pax));
             dispatch(setFlights(filterFlightsByCityAndSeats(flights, from, to, pax)));
-            console.log(filterFlightsByCityAndSeats(flights, from, to, pax));
             
             
         }

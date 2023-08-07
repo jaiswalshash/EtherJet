@@ -3,13 +3,13 @@ import Head from '../../components/Header/Head';
 import { Footer } from '../../components/Footer/Footer';
 import { convertCsvToJson } from '../../service/service';
 import Main from '../../components/FlightSearchBody/Main';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setData, setCities } from '../../redux/slice/dataSlice';
 
 const FlightSearch = () => {
   const dispatch = useDispatch();
-  const [metadata, setMetaData] = useState(null);
-  const [city, setCity] = useState(null);
+  const [metadata, setMetaData] = useState(useSelector((state) => state.data.data));
+  const [city, setCity] = useState(useSelector((state) => state.data.cities));
 
   let temp = null;
 
@@ -31,7 +31,6 @@ const FlightSearch = () => {
     function getCitiesFromArrayOfObjects(arrayOfObjects) {
       let cities = [];
       const uniqueCities = new Set();
-      console.log(arrayOfObjects);
       arrayOfObjects.map((obj) => {
         uniqueCities.add(obj.From);
         uniqueCities.add(obj.To);

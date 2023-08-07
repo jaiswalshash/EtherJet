@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    flights : []
+    flights : null
 }
 
 const flightSlice = createSlice({

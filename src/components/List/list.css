@@ -62,13 +62,38 @@
     height: 100%;
 }
 
+.flight-view-web {
+  width: 100%;
+  row-gap: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.noData {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-weight: 800;
+  font-size: large;
+  row-gap: 2%;
+}
+
+
 @media (max-width: 1000px) {
+    .flight-view-web  {
+      display: none;
+    }
     .list-main {
         width: 100%;
         padding: 0;
         padding-top: 2%;
         box-shadow: none;
         background-color: inherit;
+        height: 100%;
     }
     .web-flight-view {
         display: none;    
@@ -169,4 +194,10 @@
 
 .button-17:disabled {
   box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+}
+
+@media (max-width: 350px)  {
+  .mob-flights {
+    grid-template-columns: 0.5fr 2fr 1fr;
+}
 }

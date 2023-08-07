@@ -24,6 +24,16 @@ hr {
     background-color: #DADADA;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.reset-btn {
+    opacity: 0.8;
+}
+
+.reset-btn:hover {
+    opacity: 1;
+    cursor: pointer;
 }
 
 @media (max-width: 1000px) {

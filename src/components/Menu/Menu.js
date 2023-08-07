@@ -7,7 +7,6 @@ const Menu = ({options, close}) => {
         close();
     }
     const handleOption = (e) => {
-        console.log(e);
         // close();
     }
     return(
