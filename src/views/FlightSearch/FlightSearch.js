@@ -8,15 +8,20 @@ import { setData, setCities } from '../../redux/slice/dataSlice';
 
 const FlightSearch = () => {
   const dispatch = useDispatch();
+  const [metadata, setMetaData] = useState(null);
+  const [city, setCity] = useState(null);
+
+  let temp = null;
 
     useEffect(() => {
         const csvFilePath = '/Project.csv';
         convertCsvToJson(csvFilePath)
           .then((jsonData) => {
-            console.log(jsonData)
+            setMetaData(jsonData)
             dispatch(setData(jsonData));
-            let cities = getCitiesFromArrayOfObjects(jsonData);
-            dispatch(setCities(cities));
+            temp = getCitiesFromArrayOfObjects(jsonData);
+            setCity(temp);
+            dispatch(setCities(temp));
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -34,7 +39,7 @@ const FlightSearch = () => {
       const arr = Array.from(uniqueCities);
       arr.map((i) => {
         let obj = {
-          value: i.toLowerCase(),
+          value: i,
           label: i
         };
         cities.push(obj);
@@ -45,7 +50,7 @@ const FlightSearch = () => {
     return (
         <>
             <Head/>
-            <Main/>
+            {metadata && city && <Main/>}
             <Footer/>
         </>
     );

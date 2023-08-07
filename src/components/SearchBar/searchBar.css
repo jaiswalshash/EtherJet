@@ -10,3 +10,62 @@
     justify-content: center;
     align-items: center;
 }
+
+.select-antd {
+    width: 80%;
+}
+.custom-range-picker {
+    width: 80% !important;
+  }
+ 
+@media (max-width: 1000px) {
+
+    .custom-range-picker {
+        width: 100% !important;
+      }
+      .ant-picker-panels > *:first-child button.ant-picker-header-next-btn {
+        visibility: visible !important;
+      }
+      
+      .ant-picker-panels > *:first-child button.ant-picker-header-super-next-btn {
+        visibility: visible !important;
+      }
+      
+      .ant-picker-panels > *:last-child {
+        display: none !important;
+      }
+      
+      .ant-picker-panel-container, .ant-picker-footer {
+        width: 280px !important;
+      }
+      
+      .ant-picker-footer-extra > div {
+        flex-wrap: wrap !important; 
+      }
+      .select-antd {
+        width: 100%;
+    }
+    .ant-select-single .ant-select-selector .ant-select-selection-search {
+        position: absolute;
+        top: 0;
+        inset-inline-start: 11px;
+        inset-inline-end: 11px;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .ant-select-show-search:where(.css-dev-only-do-not-override-19gw05y).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+        cursor: text;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+    }
+    .search-button {
+        width: 100%;
+    }
+    .custom-range-picker {
+      width: 100% !important;
+      height: 2.5rem;
+    }
+}

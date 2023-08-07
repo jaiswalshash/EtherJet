@@ -57,5 +57,9 @@
         font-size: small;
         width: 60%;
     }   
+    .head-options {
+        width: 78%;
+        justify-content: end;
+    }
 }
 

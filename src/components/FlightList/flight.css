@@ -1,0 +1,141 @@
+.flight-main-body {
+    display: flex;
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    box-sizing: border-box;
+    padding: 2% 8%;
+    flex-direction: column;
+    row-gap: 5%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.flightList {
+    height: 80%;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+ 
+.flight-details {
+    width: 100%;
+}
+
+.back-home {
+    display: flex;
+    align-items: center;
+    column-gap: 0.6rem;
+    font-size: medium;
+    font-weight: 500;
+    opacity: 0.7;
+}
+.back-home:hover {
+    opacity: 1;
+}
+.tour {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 1rem;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.filter-main {
+    height: 100%;
+    width: 27%;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    display: flex;
+    /* align-items: center; */
+    box-shadow: 5px 5px 5px rgb(113, 128, 133);
+    box-sizing: border-box;
+    padding: 1%;
+    flex-direction: column;
+}
+
+.mob-filter {
+    display: none;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    /* align-items: center; */
+    box-shadow: 5px 5px 5px rgb(113, 128, 133);
+    box-sizing: border-box;
+    padding: 1%;
+    flex-direction: column;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 90%;
+    border-radius: 5px;
+    padding: 5%;
+}
+.filter-sort {
+    display: none;
+}
+
+.modify-searchbar {
+    width: 100%;
+    height: 25%;
+    box-shadow: 5px 5px 5px rgb(113, 128, 133);
+    background-color: white;
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 1%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 0.5fr  1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+.modify-search:hover {
+    opacity: 1;
+    border: 1px solid black;
+}
+
+@media (max-height: 600px) {
+    .flight-main-body {
+        top: 7rem;
+        bottom: 3rem;
+        
+    }
+}
+
+@media (max-width: 1000px) {
+    .flight-main-body {
+        top: 4rem;
+        align-items: start;
+        row-gap: 1%;
+        align-items: center;
+        padding: 2% 5%;
+    }
+    .flight-details {
+        padding-left: 2%;
+    }
+    .flightList {
+        padding: 0;
+    }
+    .tourdate {
+        display: none;
+    }
+    .filter-main {
+        display: none;
+    }
+    .mob-filter {
+        display: flex;
+        z-index: 10;
+    }
+    .filter-sort {
+        display: block;
+    }
+    .modify-searchbar{
+        display: none;
+    }
+}

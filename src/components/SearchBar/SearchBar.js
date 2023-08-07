@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import './searchBar.css';
 import { Select, DatePicker } from 'antd';
+import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 const { RangePicker } = DatePicker;
 
-const SearchBar = () => {
-  const cityOptions = useSelector((state) => state.data.cities);
-  const [selectedCity, setSelectedCity] = useState(null);
 
-  const handleCityChange = (value) => {
-    setSelectedCity(value);
+const SearchBar = ({start, end}) => {
+  const cityOptions = useSelector((state) => state.data.cities);
+  const [from , setFrom] = useState(useSelector((state) => state.tour.from));
+  const [to, setTo] = useState(useSelector((state) => state.tour.to));
+
+  const handleToChange = (value) => {
+    setTo(value);
+    start(value);
   };
 
-  const isOptionDisabled = (option) => option.label === 'Delhi';
-
+  const handleFromChange = (value) => {
+    setFrom(value);
+    end(value);
+  };
+  const isToDisabled = (option) => option.label === from;
+  const isFromDisabled = (option) => option.label === to;
+  const dateFormat = 'DD-MM-YYYY';
   return (
     <>
       <Select
+        className='select-antd'
         showSearch
-        style={{
-          width: "100%",
-        }}
-        placeholder="Search to Select"
+        placeholder="From"
         optionFilterProp="children"
         filterOption={(input, option) =>
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -31,18 +38,17 @@ const SearchBar = () => {
         }
         options={cityOptions.map((option) => ({
           ...option,
-          disabled: isOptionDisabled(option),
+          disabled: isFromDisabled(option),
         }))}
-        value={selectedCity}
-        onChange={handleCityChange}
+        value={from}
+        onChange={handleFromChange}
+
       />
 
     <Select
+        className='select-antd'
         showSearch
-        style={{
-          width: "100%",
-        }}
-        placeholder="Search to Select"
+        placeholder="To"
         optionFilterProp="children"
         filterOption={(input, option) =>
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -52,17 +58,17 @@ const SearchBar = () => {
         }
         options={cityOptions.map((option) => ({
           ...option,
-          disabled: isOptionDisabled(option),
+          disabled: isToDisabled(option),
         }))}
-        value={selectedCity}
-        onChange={handleCityChange}
+        value={to}
+        onChange={handleToChange}
       />
       <RangePicker
-        style={{
-          width: "100%",
-        }}
+        className='custom-range-picker'
+        format={dateFormat}
+        defaultValue={[dayjs('05-08-2023', dateFormat), null]}
+        disabled= {[false, true]}
       />
-      <button className='search-button'>Search</button>
     </>
   );
 };

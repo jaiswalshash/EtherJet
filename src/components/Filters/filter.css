@@ -1,0 +1,34 @@
+
+
+.filter-head {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0%;
+    align-items: center;
+}
+
+hr {
+    width: 100%;
+    opacity: 0.5;
+}
+.filter-close {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    display: none;
+}
+
+.filter-close button {
+    height: 2rem;
+    background-color: #DADADA;
+    border: none;
+    border-radius: 5px;
+}
+
+@media (max-width: 1000px) {
+
+    .filter-close {
+        display:block;
+    }
+}
