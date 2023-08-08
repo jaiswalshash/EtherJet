@@ -26,7 +26,7 @@ export const store = configureStore({
        filter: persistedFilter
     },
     middleware: [thunk],
-    devTools: true
+    devTools: false
 })
 
 export const persistor = persistStore(store);
