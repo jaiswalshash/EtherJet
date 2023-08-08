@@ -4,6 +4,7 @@ import FlightSearch from './views/FlightSearch/FlightSearch';
 import { FlightList } from './views/FlightList/FlightList';
 
 function App() {
+  localStorage.clear();
   return (
     <div>
       <Router basename="/">

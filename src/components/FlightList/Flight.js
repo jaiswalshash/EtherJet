@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import { InputNumber } from "antd";
 import { setTourFrom, setTourPax, setTourTo } from "../../redux/slice/TourSlice";
-import { setFlights } from "../../redux/slice/flightSlice";  
+import { setFilterd, setFlights, setMaxP, setMinP } from "../../redux/slice/flightSlice";  
 import Loader from "../Loader/Loader";
+import { setAir } from "../../redux/slice/filterSlice";
 
 const Main = () => {
     const [fromCity, setFromCity] = useState(useSelector((state) => state.tour.from));
@@ -19,23 +20,28 @@ const Main = () => {
     const [filterClose, setFilterClose]  = useState(false); 
     const to = useSelector((state) => state.tour.to);
     const from = useSelector((state) => state.tour.from);
-    const paxNo = useSelector((state) => state.tour.pax);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const flights = useSelector((state) => state.data.data);
     const [loader, setLoader] = useState(false);
     const filterFlights = useSelector((state) => state.flights.flights);
-    const [priceSort, setPriceSort] = useState(false);
+    const [priceSort, setPriceSort] = useState(true);
     const [seatSort, setSeatSort] = useState(false);
     const [durationSort, setDurationSort] = useState(false);
+
+    const [flightData, setFlightData] = useState(null);
+    const [render, setRender] = useState(false);    
     
     useEffect(() => {
         if (toCity === null || fromCity === null ) {
             navigate("/")
         }
-
     }, [])
     const handleBack = () => { 
+        if (localStorage.getItem("max")) {
+            localStorage.removeItem("max");
+            localStorage.removeItem("min");
+        }
         navigate("/")
     }
 
@@ -69,23 +75,53 @@ const Main = () => {
     const formattedDate = `${today.getDate()} ${today.toLocaleString('default', { month: 'short' })} '${today.getFullYear().toString().substr(-2)}`;
 
     const handleSearch = () => {
+        setRender(!render);
         setLoader(true);
         setTimeout(executeAfter3Seconds, 3000);
         dispatch(setTourTo(toCity));
         dispatch(setTourFrom(fromCity));
         dispatch(setTourPax(pax));
-        dispatch(setFlights(filterFlightsByCityAndSeats(flights, fromCity, toCity, pax)));
+        const filterdFlight = filterFlightsByCityAndSeats(flights, fromCity, toCity, pax);
+        dispatch(setFlights(filterdFlight));
+        setFlightData(filterdFlight);
+        const price = getMaxAndMinPrices(filterdFlight);
+        dispatch(setFilterd(filterdFlight));
+        dispatch(setMaxP(price[0]));
+        dispatch(setMinP(price[1]));
+        dispatch(setAir(["Air India", "Jet Airways", "Indigo"]))
     }
-    function filterFlightsByCityAndSeats(flights, fromCity, toCity, pax) {
+
+    function getMaxAndMinPrices(flights) {
+        if (flights === null || flights.length === 0) {
+            return [0, 0]; // Return [0, 0] for empty array as a default
+        }
+
+        let maxPrice = Number.MIN_SAFE_INTEGER;
+        let minPrice = Number.MAX_SAFE_INTEGER;
+
+        for (const flight of flights) {
+            const price = parseInt(flight.Price);
+            if (price > maxPrice) {
+            maxPrice = price;
+            }
+            if (price < minPrice) {
+            minPrice = price;
+            }
+        }
+
+        return [maxPrice, minPrice];
+    }
+
+    function filterFlightsByCityAndSeats(flights, fromCity, toCity, paxNo) {
         const filteredFlights = flights.filter((flight) => {
-            return flight.To === toCity && flight.From === fromCity && pax <= flight["Seats Available"];
+            return flight.To === toCity && flight.From === fromCity && paxNo <= flight["Seats Available"];
           });
           return filteredFlights;
       }
 
       const handlePriceSort = () => {
         const sorted = sortFlights(filterFlights, priceSort);
-        dispatch(setFlights(sorted));
+        dispatch(setFilterd(sorted));
         setPriceSort(!priceSort);
       }
 
@@ -95,7 +131,7 @@ const Main = () => {
 
       const handleSeats = () => {
         const sorted = sortFlightSeats(filterFlights, seatSort);
-        dispatch(setFlights(sorted));
+        dispatch(setFilterd(sorted));
         setSeatSort(!seatSort);
       }
 
@@ -144,7 +180,7 @@ const Main = () => {
                     <div style={{cursor: "pointer", color: "#1677FF", fontWeight: "800"}} onClick={handleBack}>Back To Home</div>
                 </div>
                 <div className="tour">
-                    {from} <img src={right} width={25}/> {to} <span className="tourdate" style={{opacity: "0.5"}}>| {formattedDate}</span>
+                    {from} <img src={right} width={25} alt=""/> {to} <span className="tourdate" style={{opacity: "0.5"}}>| {formattedDate}</span>
                 </div>
                 <div className="filter-sort">
                     <div onClick={handleFilter} className="filter">Filters</div>
@@ -159,7 +195,7 @@ const Main = () => {
                 </div>
             </div>
             <div className="flightList">
-                 <div className="filter-main"><Filter /></div>
+                 <div className="filter-main"><Filter paxNo = {pax} flightData = {flightData} render={render} /></div> 
                  {filterClose && <div className= "mob-filter"><Filter close={handleFilterClose}/></div>}
                 <List/>
             </div>

@@ -9,9 +9,10 @@ import user from "../../assets/user.png"
 import { useSelector, useDispatch } from 'react-redux';
 import tarvel from "../../assets/travel.jpg"
 import { setTourTo, setTourFrom, setTourPax } from '../../redux/slice/TourSlice';
-import { setFlights } from '../../redux/slice/flightSlice';
+import { setFilterd, setFlights, setMaxP, setMinP } from '../../redux/slice/flightSlice';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../Loader/Loader';
+import { setAir } from '../../redux/slice/filterSlice';
 
 const Main = () => {
     const [type, setType] = useState("oneWay");
@@ -64,16 +65,43 @@ const Main = () => {
             dispatch(setTourTo(to));
             dispatch(setTourFrom(from));
             dispatch(setTourPax(pax));
-            dispatch(setFlights(filterFlightsByCityAndSeats(flights, from, to, pax)));
-            
-            
+            dispatch(setAir(["Air India", "Jet Airways", "Indigo"]))
+            const filterdFlight = filterFlightsByCityAndSeats(flights, from, to, pax);
+            dispatch(setFlights(filterdFlight));
+            dispatch(setFilterd(filterdFlight));
+            const price = getMaxAndMinPrices(filterdFlight);
+            dispatch(setMaxP(price[0]));
+            dispatch(setMinP(price[1]));
         }
     }
+
+    function getMaxAndMinPrices(flights) {
+        if (flights === null || flights.length === 0) {
+            return [0, 0]; // Return [0, 0] for empty array as a default
+        }
+
+        let maxPrice = Number.MIN_SAFE_INTEGER;
+        let minPrice = Number.MAX_SAFE_INTEGER;
+
+        for (const flight of flights) {
+            const price = parseInt(flight.Price);
+            if (price > maxPrice) {
+            maxPrice = price;
+            }
+            if (price < minPrice) {
+            minPrice = price;
+            }
+        }
+
+        return [maxPrice, minPrice];
+    }
+    
 
     function executeAfter3Seconds() {
         setLoader(false);
         navigate("/flights")
-    }   
+    }  
+     
 
     function filterFlightsByCityAndSeats(flights, fromCity, toCity, pax) {
         const filteredFlights = flights.filter((flight) => {

@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    flights : null
+    flights : null,
+    filtered : null,
+    max: null,
+    min: null
 }
 
 const flightSlice = createSlice({
@@ -10,9 +13,19 @@ const flightSlice = createSlice({
     reducers: {
         setFlights : (state, action) => {
             state.flights = action.payload;
+        },
+        setMaxP : (state, action) => {
+            state.max = action.payload;
+        },
+        setMinP : (state, action) => {
+            state.min = action.payload;
+        },
+        setFilterd : (state, action) => {
+            state.filtered = action.payload;
         }
+
     }
 })
 
 export default flightSlice.reducer;
-export const {setFlights} = flightSlice.actions; 
+export const {setFlights, setMaxP, setMinP, setFilterd} = flightSlice.actions; 

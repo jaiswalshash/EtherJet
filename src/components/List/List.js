@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const List = () => {
     const navigate = useNavigate();
-    const flights = useSelector((state => state.flights.flights));
+    const flights = useSelector((state => state.flights.filtered));
     const logos ={
         "Air India" : airIndia,
         "Jet Airways": jetAir,

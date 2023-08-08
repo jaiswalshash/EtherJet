@@ -3,39 +3,41 @@ import { Slider, Typography, Checkbox } from 'antd';
 import "./filter.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setFlights } from '../../redux/slice/flightSlice';
+import { setFilterd } from '../../redux/slice/flightSlice';
+import { setAir, setValues } from '../../redux/slice/filterSlice';
 
 const { Text } = Typography;
 
-const Filter = ({close}) => {
+const Filter = ({close, paxNo, flightData, render}) => {
     const dispatch  = useDispatch();
     const navigate = useNavigate();
-    const data = useSelector((state) => state.data.data);
-    const flights = useSelector((state) => state.flights.flights);
-    const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(0);
-    const [airline, setAirline] = useState(["Air India", "Jet Airways", "Indigo"]); 
-    const [toCity, setToCity] = useState(useSelector((state) => state.tour.to));
-    const [fromCity, setFromCity] = useState(useSelector((state) => state.tour.from));
-    const [pax, setPax] = useState(useSelector((state) => state.tour.pax));
+    let flights = (useSelector((state) => state.flights.flights));
+    const [airline, setAirline] = useState(useSelector((state) => state.filter.airline)); 
+    let maxP = useSelector((state) => state.flights.max);
+    let minP = useSelector((state) => state.flights.min);
+    const [minValue, setMinValue] = useState(useSelector((state) => state.flights.max));
+    const [maxValue, setMaxValue] = useState(useSelector((state) => state.flights.max));
 
     useEffect(() => {
+        setMinValue(minP);
+        setMaxValue(maxP);
+    }, [render])
+
+    const formatter = (value) => `₹${value}`;
+    useEffect(() => {
+        if (localStorage.getItem("min") && localStorage.getItem("min") && window.innerWidth < 1000) {
+            
+            let x = localStorage.getItem("min");
+            let y = localStorage.getItem("max");
+            setMinValue(x);
+            setMaxValue(y);
+        }
         if (flights === null ) {
             navigate("/")
         }
         if (flights && flights.length === 0) {
             setMinValue(0);
             setMaxValue(0);
-        }
-        else if (flights){
-            let min = 1e9;
-            let max = 0;
-            flights.map((flight) => {
-                min =  Math.min(flight.Price, min);
-                max = Math.max(flight.Price, max);
-            })
-            setMinValue(min);
-            setMaxValue(max);
         }
         else if (!flights) {
             navigate("/")
@@ -44,6 +46,8 @@ const Filter = ({close}) => {
     
 
     const handleSliderChange = (values) => {
+        
+        dispatch(setValues(values));
         setMinValue(values[0]);
         setMaxValue(values[1]);
     };
@@ -74,8 +78,9 @@ const Filter = ({close}) => {
             min: minValue,
             max : maxValue
          }
-         dispatch(setFlights(filterFlights(flights,price, airline, durationOptions)));
-         
+         localStorage.setItem("min", minValue);
+         localStorage.setItem("max", maxValue);
+         dispatch(setFilterd(filterFlights(flights,price, airline, durationOptions)));
             if (window.innerWidth < 1000){
                 close();
             }
@@ -95,22 +100,24 @@ const Filter = ({close}) => {
 
   const handleAirline = (e) => {
     setAirline(e);
+    dispatch(setAir(e))
   }
 
   const handleReset = () => {
-    const filteredFlight = filterFlightsByCityAndSeats(data, fromCity, toCity, pax)
-    dispatch(setFlights(filteredFlight)); 
-    setAirline(["Air India", "Jet Airways", "Indigo"]);
+    if (localStorage.getItem("max")) {
+        localStorage.removeItem("max");
+        localStorage.removeItem("min");
+    }
+    
+    setMaxValue(maxP);
+    setMinValue(minP);
+    dispatch(setFilterd(flights)); 
+    dispatch(setAir(["Air India", "Jet Airways", "Indigo"]));
     if (window.innerWidth < 1000){
         close();
     }
     }
-    function filterFlightsByCityAndSeats(flights, fromCity, toCity, pax) {
-        const filteredFlights = flights.filter((flight) => {
-            return flight.To === toCity && flight.From === fromCity && pax <= flight["Seats Available"];
-        });
-        return filteredFlights;
-    }
+
 
     return(
         <>
@@ -123,15 +130,18 @@ const Filter = ({close}) => {
                 <div style={{fontSize: "0.8rem"}}>Price from</div>
                 <Slider
                     range
-                    min={minValue}
-                    max={maxValue}
-                    step={10}
-                    defaultValue={[minValue, 8000]}
+                    min={minP}
+                    max={maxP}
+                    tooltip={{
+                        formatter,
+                      }}
+                    // defaultValue={[minP, maxP]}
+                    value={[minValue, maxValue]}
                     onChange={handleSliderChange}
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Text>{minValue}</Text>
-                    <Text>{maxValue}</Text>
+                    <Text>₹{minValue}</Text>
+                    <Text>₹{maxValue}</Text>
                 </div>
             </div>
             <hr/>
