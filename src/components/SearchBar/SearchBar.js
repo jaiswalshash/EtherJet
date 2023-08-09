@@ -72,6 +72,7 @@ const SearchBar = ({ start, end }) => {
         format={dateFormat}
         defaultValue={[dayjs(today, dateFormat), null]} // Set the default value to today's date
         disabledDate={disabledDate} // Disable past days
+        disabled= {[false, true]}
       />
     </>
   );

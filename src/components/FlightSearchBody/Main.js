@@ -49,15 +49,16 @@ const Main = () => {
 
     const handleFlightSearch = () => {
         if (to === null || from === null || pax === null) {
-            if (to === null) {
-                alert("Please select a source!")
+            if (pax === null) {
+                return  alert("Please select number of passengers!")
             }
             if (from === null) {
-                alert("Please select a destination!")
+                return alert("Please select a source!")
             }
-            if (pax === null) {
-                alert("Please select number of passengers!")
+            if (to === null) {
+                return alert("Please select a destination!")
             }
+            
         }
         else {
             setLoader(true);

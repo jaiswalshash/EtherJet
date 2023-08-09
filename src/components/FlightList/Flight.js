@@ -24,10 +24,10 @@ const Main = () => {
     const dispatch = useDispatch();
     const flights = useSelector((state) => state.data.data);
     const [loader, setLoader] = useState(false);
-    const filterFlights = useSelector((state) => state.flights.flights);
+    const filterFlights = useSelector((state) => state.flights.filtered);
     const [priceSort, setPriceSort] = useState(true);
     const [seatSort, setSeatSort] = useState(false);
-    const [durationSort, setDurationSort] = useState(false);
+    const [durationSort, setDurationSort] = useState(true);
 
     const [flightData, setFlightData] = useState(null);
     const [render, setRender] = useState(false);    
@@ -93,7 +93,7 @@ const Main = () => {
 
     function getMaxAndMinPrices(flights) {
         if (flights === null || flights.length === 0) {
-            return [0, 0]; // Return [0, 0] for empty array as a default
+            return [0, 0]; 
         }
 
         let maxPrice = Number.MIN_SAFE_INTEGER;
@@ -127,6 +127,34 @@ const Main = () => {
 
       const handleDuration = () => {
         setDurationSort(!durationSort);
+        const sorted = sortFlightsByDuration(filterFlights, durationSort)
+        dispatch(setFilterd(sorted));
+        setDurationSort(!durationSort)
+      }
+      function sortFlightsByDuration(flights, increasing) {
+        const compareDurations = (a, b) => {
+            const durationA = parseDuration(a.Duration);
+            const durationB = parseDuration(b.Duration);
+            return increasing ? durationA - durationB : durationB - durationA;
+          };
+        
+          flights = [...flights].sort(compareDurations);
+          return flights;
+      }
+      
+      function parseDuration(duration) {
+        const parts = duration.split(' ');
+        let totalMinutes = 0;
+      
+        for (const part of parts) {
+          if (part.includes('h')) {
+            totalMinutes += parseInt(part) * 60;
+          } else if (part.includes('m')) {
+            totalMinutes += parseInt(part);
+          }
+        }
+      
+        return totalMinutes;
       }
 
       const handleSeats = () => {
@@ -190,7 +218,7 @@ const Main = () => {
                         |
                         <div onClick={handleSeats} className="sort-button">Seats</div>
                         |
-                        <div style={{cursor: "no-drop"}} className="sort-button" onClick={handleDuration} >Duration</div>
+                        <div className="sort-button" onClick={handleDuration} >Duration</div>
                     </div>
                 </div>
             </div>

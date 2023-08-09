@@ -17,10 +17,12 @@ const Filter = ({close, paxNo, flightData, render}) => {
     let minP = useSelector((state) => state.flights.min);
     const [minValue, setMinValue] = useState(useSelector((state) => state.flights.max));
     const [maxValue, setMaxValue] = useState(useSelector((state) => state.flights.max));
+    
 
     useEffect(() => {
         setMinValue(minP);
         setMaxValue(maxP);
+        setAirline(["Air India", "Jet Airways", "Indigo"]);
     }, [render])
 
     const formatter = (value) => `₹${value}`;
@@ -145,7 +147,7 @@ const Filter = ({close, paxNo, flightData, render}) => {
                 </div>
             </div>
             <hr/>
-            <div>
+            <div className='duration-disable'>
             <div style={{fontSize: "0.8rem", margin:"1%"}}>Duration</div>
             <Checkbox
                 checked={durationOptions.lessThan2Hours}
@@ -175,11 +177,11 @@ const Filter = ({close, paxNo, flightData, render}) => {
                 defaultValue={["Air India", "Jet Airways", "Indigo"]}
             onChange={handleAirline} />
             <div className='filter-close'>
-                <button onClick={handleFilter}>Close</button>
+                <button style={{color: "black"}} onClick={handleFilter}>Close</button>
             </div>
             <hr/>
             <div style={{width: "100%", justifyContent: "end", display: "flex"}}>
-                <button onClick={handleApplyFilter} style={{height: "1.5rem", width: "30%", border: "none"}} className='button-17'>Apply</button>
+                <button onClick={handleApplyFilter} style={{height: "1.5rem", width: "30%", border: "none", color: "#1677ff"}} className='button-17'>Apply</button>
             </div>
         </>
     )
