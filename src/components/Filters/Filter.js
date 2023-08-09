@@ -114,6 +114,7 @@ const Filter = ({close, paxNo, flightData, render}) => {
     setMaxValue(maxP);
     setMinValue(minP);
     dispatch(setFilterd(flights)); 
+    setAirline(["Air India", "Jet Airways", "Indigo"])
     dispatch(setAir(["Air India", "Jet Airways", "Indigo"]));
     if (window.innerWidth < 1000){
         close();
